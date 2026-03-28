@@ -1,3 +1,5 @@
+module RPG where
+
 data Direction = LeftDir | RightDir | UpDir | DownDir
   deriving (Show)
 
@@ -19,4 +21,10 @@ data Command =
   | Attack AttackType
   deriving (Show)
 
+data CommandList
+  = Single Command
+  | Cons Command CommandList
+  deriving (Show)
 
+data Program = Program CommandList
+  deriving (Show)
