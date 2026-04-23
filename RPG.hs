@@ -96,3 +96,24 @@ p1 = Program decl [Move 3, Turn LeftDir]
 
 evalCommand (Turn dir) (Env p b) =
   Env (p {direction = dir}) b
+
+evalCommand (Move i) (Env p b) =
+  let (x, y) = position p
+      newPos = case direction p of
+        LeftDir  -> (x - i, y)
+        RightDir -> (x + i, y)
+        UpDir    -> (x, y + i)
+        DownDir  -> (x, y - i)
+  in Env (p { position = newPos }) b
+
+evalCommand (Grab item) (Env p b) =
+  Env (p { items = item : items p }) b
+
+
+
+
+
+
+
+
+evalCommand _ env = env
