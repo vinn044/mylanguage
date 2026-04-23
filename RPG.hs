@@ -1,4 +1,3 @@
-module RPG where
 import Data.List (intercalate)
 
 data Direction = LeftDir | RightDir | UpDir | DownDir
@@ -18,7 +17,7 @@ instance Show AttackType where
 
 
 data Item = Potion | Sword | Armor 
-  deriving (Show)
+  deriving (Show, Eq)
 
 
 data Command = Move Int
@@ -71,7 +70,6 @@ instance Show Player where
           ++ "position: " ++ show pos
 
 
--- FIXED HERE: added deriving (Show)
 data GameBoard = GameBoard {
   width :: Int,
   height :: Int,
@@ -110,10 +108,38 @@ evalCommand (Grab item) (Env p b) =
   Env (p { items = item : items p }) b
 
 
+evalCommand (Drop item) (Env p b) =
+  let pos = position p
+      newPlayerItems = filter (/= item) (items p)
+      newBoardItems = (pos, item) : boardItems b
+  in Env (p { items = newPlayerItems })
+         (b { boardItems = newBoardItems })
 
 
+evalCommand (Use Potion) (Env p b) =
+  Env (p { items = filter (/= Potion) (items p) }) b
+
+evalCommand (Use _) (Env p b) =
+  Env p b
+
+evalCommand (Equip item) (Env p b) =
+  Env (p { equipped = Just item }) b
+
+evalCommand (Unequip _) (Env p b) =
+  Env (p { equipped = Nothing }) b
+
+evalCommand (Attack _) (Env p b) =
+  Env p b
 
 
+runProgram :: Program -> Env
+runProgram (Program (b, p) cmds) =
+  foldl (\env cmd -> evalCommand cmd env) (Env p b) cmds
 
 
-evalCommand _ env = env
+main :: IO ()
+main = do
+  putStrLn "Program:"
+  print p1
+  putStrLn "\nResult:"
+  print (runProgram p1)
