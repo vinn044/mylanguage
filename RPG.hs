@@ -82,7 +82,7 @@ data GameBoard = GameBoard {
 data Env = Env {
   player :: Player,
   board :: GameBoard
-}
+} deriving (Show)
 
 
 initialPlayer = Player "Vince" [] Nothing UpDir (0,0)
@@ -92,3 +92,7 @@ initialBoard = GameBoard 10 5 [((2,3), Sword), ((1,1), Potion), ((4,6), Sword)]
 decl = (initialBoard, initialPlayer)
 
 p1 = Program decl [Move 3, Turn LeftDir]
+
+
+evalCommand (Turn dir) (Env p b) =
+  Env (p {direction = dir}) b
