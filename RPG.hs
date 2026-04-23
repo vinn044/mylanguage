@@ -41,7 +41,6 @@ instance Show Command where
   show (Attack atk) = "attack: " ++ show atk
 
 
--- CHANGED: now using built-in list instead of custom recursion
 data Program = Program Decl [Command]
   deriving (Show)
 
@@ -72,11 +71,12 @@ instance Show Player where
           ++ "position: " ++ show pos
 
 
+-- FIXED HERE: added deriving (Show)
 data GameBoard = GameBoard {
   width :: Int,
   height :: Int,
-  items :: [(Location, Item)]
-}
+  boardItems :: [(Location, Item)]
+} deriving (Show)
 
 
 data Env = Env {

@@ -1,26 +1,13 @@
 import RPG
 
--- Example Program 1
--- move left
--- attack slash
--- grab sword
-
 prog1 :: Program
-prog1 = Program (Cons (Move LeftDir) (Cons (Attack Slash) (Single (Grab Sword))))
-
--- Example Program 2
--- dodge right
--- use potion
+prog1 = Program decl [Move 3, Attack Slash, Grab Sword]
 
 prog2 :: Program
-prog2 = Program (Cons (Dodge RightDir) (Single (Use Potion)))
-
--- Example Program 3
--- equip armor
--- attack overhand
+prog2 = Program decl [Turn RightDir, Use Potion]
 
 prog3 :: Program
-prog3 = Program (Cons (Equip Armor) (Single (Attack Overhand)))
+prog3 = Program decl [Equip Armor, Attack Overhand]
 
 main :: IO ()
 main = do
